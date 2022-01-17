@@ -14,7 +14,7 @@ struct ContentView: View {
         Text("Car Make: \(car.make)")
         Text("Car Model: \(car.model)")
         Text("Car Top Speed: \(car.topSpeed)mph")
-        Text("Car Acceleration (0-60): \(car.acceleration)s")
+        Text("Car Acceleration (0 - 60): \(car.acceleration)s") 
         Text("Car Handling: \(car.handling)")
             .padding()
     }
