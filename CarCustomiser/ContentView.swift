@@ -15,54 +15,25 @@ struct ContentView: View {
     @State private var enginePackage = false
     @State private var drivetrainPackage = false
     @State private var remainingFunds = 1000
+    @State private var remainingTime = 30
+    
     
     var exhaustPackageEnabled: Bool{
-        if exhaustPackage == true{
-            return true
-        }else{
-            if remainingFunds>=500{
-                return true
-            }else{
-                return false
-            }
-        }
+        return exhaustPackage ? true : remainingFunds >= 500 ? remainingTime>0 ? true : false : false
     }
     
     var tirePackageEnabled: Bool{
-        if tirePackage == true{
-            return true
-        }else{
-            if remainingFunds>=500{
-                return true
-            }else{
-                return false
-            }
-        }
+        return tirePackage ? true : remainingFunds >= 500 ? remainingTime>0 ? true : false : false
     }
 
     var enginePackageEnabled: Bool{
-        if enginePackage == true{
-            return true
-        }else{
-            if remainingFunds>=500{
-                return true
-            }else{
-                return false
-            }
-        }
+        return enginePackage ? true : remainingFunds >= 500 ? remainingTime>0 ? true : false : false
     }
     
     var drivetrainPackageEnabled: Bool{
-        if drivetrainPackage == true{
-            return true
-        }else{
-            if remainingFunds>=500{
-                return true
-            }else{
-                return false
-            }
-        }
+        return drivetrainPackage ? true : remainingFunds >= 500 ? remainingTime>0 ? true : false : false
     }
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
 
     
@@ -130,14 +101,24 @@ struct ContentView: View {
 
         Form{
             VStack(alignment: .leading, spacing: 20){
+                Text("\(remainingTime)")
+                    .onReceive(timer) { _ in
+                    if self.remainingTime > 0 {
+                        self.remainingTime -= 1
+                    }
+                }
                 Text("\(starterCars.cars[selectedCar].displayStats())")
                 Button("Next Car", action:{
-                    if selectedCar == self.starterCars.cars.count-1{
-                        selectedCar = 0
-                    } else {
-                        selectedCar = selectedCar + 1
+                    if remainingTime == 0{
+                        
+                    }else{
+                        if selectedCar == self.starterCars.cars.count-1{
+                            selectedCar = 0
+                        } else {
+                            selectedCar = selectedCar + 1
+                        }
+                        resetDisplay()
                     }
-                    resetDisplay()
                 })
             }
             Section {
